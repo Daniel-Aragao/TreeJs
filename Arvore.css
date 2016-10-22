@@ -1,0 +1,25 @@
+div.tree-node div{
+    padding-left: 20px;
+    border-left: 1px solid;
+}
+
+.node-orientation{
+    font-weight: bold;
+}
+
+.node-orientation-left{
+    color: red;
+}
+
+.node-orientation-right{
+    color: blue;
+}
+/*
+.node-orientation.node-orientation-left{
+    display: none;
+}
+
+.node-orientation.node-orientation-right{
+    display: none;
+}
+*/
