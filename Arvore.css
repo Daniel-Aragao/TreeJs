@@ -14,7 +14,12 @@ div.tree-node div{
 .node-orientation-right{
     color: blue;
 }
+
 /*
+uncomment to hide "right" and "left" span tag
+or change the behavior
+
+
 .node-orientation.node-orientation-left{
     display: none;
 }
