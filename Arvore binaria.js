@@ -25,7 +25,7 @@ TreeJs = (function(){
             return node
         }
         this.addNewNode = function (value, pai, side) {
-            if (typeof (pai) == "number") {
+            if (!(pai instanceof Node)) {
                 pai = this.getNode(pai)
             }
             var node = new Node(value);
