@@ -138,11 +138,106 @@ TreeJs = (function(){
     }
 
     function HeapTree() {
-        parent = null;
+        var vetor = []
+        this.arvore = vetor;
+
+        /*
+        i = 1 é a raiz
+        -piso de i/2 é o pai de i
+        -2i é o filho esquerdo de i
+        -2i+1 é o filho direito de i
+        -indice 1 não tem pai...
+        -i só tem filho direito se (2i + 1) <= n
+        -i só tem filho esquerdo se 2i <= n
+        -nível de i é o piso de log(i,2)
+        -nº de nós em um nível é 2**p e são
+            (2**p , (2**p + 1), (2**p + 2), ... , ( 2** (p + 1) - 1))
+        -nº total de níveis é 1 + piso de log de n
+        -o nº total de nós em um nível (tirando o ultimo) é a
+            soma da qtd de nós de todos os outros níveis anteriores + 1        
+        -altura de um nó i é o piso de log(n/i)
+        */
+        this.addNode = function (item) {
+            vetor.push(item);
+            this.buildHeap();
+        }
+
+        this.removeNode = function (item) {
+            a.indexOf(item);
+            alert("não implementado");
+            this.buildHeap();
+        }
+
+        var peneira = function (i) {
+            var j = i;
+            var n = vetor.length - 1;
+            while (2 * j <= n) {
+                var f = 2 * j;
+                if (f < n && vetor[f] < vetor[f + 1]) {
+                    f++;
+                }
+                if (vetor[j] >= vetor[f]) {
+                    j = n;
+                } else {
+                    var t = vetor[j];
+                    vetor[j] = vetor[f];
+                    vetor[f] = vetor[t];
+                    j = f;
+                }
+            }
+        }
+
+        this.buildHeap = function () {
+            var n = vetor.length - 1;
+            for (var i = parseInt(n / 2); i > 1; i--){
+                peneira(i);
+            }
+        }
 
     }
 
-    function buildHTML(node) {
+    function buildHTMLHeap(tree, i) {
+        a(tree.arvore, i);
+    }
+
+    function a(vetor, i) {
+        var ndiv = document.createElement("div");
+        ndiv.className += " tree-node "
+
+        var nspan = document.createElement("span");
+        nspan.className += " tree-value "
+
+        nspan.innerText = vetor[i];
+        ndiv.appendChild(nspan);
+
+        var cssClass = "node-orientation";
+        
+        if (typeof(vetor[2*i]) != "undefined") {
+            var left_html = buildHTML(vetor[2*i]);
+            left_html.children[0].className += cssClass+"-left"
+            left_html.children[0].insertAdjacentHTML("afterend",
+                "<span class=\""+cssClass+" "+cssClass+"-left\"> - Left</span>")
+            
+            ndiv.appendChild(left_html);  
+        }
+
+        if (typeof(vetor[2*i + 1]) != "undefined") {
+            var right_html = buildHTML(2*i + 1);
+            right_html.children[0].className += cssClass+"-right"
+
+            right_html.children[0].insertAdjacentHTML("afterend",
+                "<span class=\""+cssClass+" "+cssClass+"-right\"> - Right</span>")
+
+            ndiv.appendChild(right_html);
+        }
+        return ndiv;
+    }
+
+    function buildHTML(node, i) {
+        if (node instanceof HeapTree) {
+            return buildHTMLHeap(node, i);
+        }
+
         var ndiv = document.createElement("div");
         ndiv.className += " tree-node "
 
@@ -177,10 +272,13 @@ TreeJs = (function(){
     
     return {
         newNode: function () {
-            return new Node()
+            return new Node();
         },
         newTree: function () {
-            return new Tree()
+            return new Tree();
+        },
+        newHeapTree: function () { 
+            return new HeapTree();
         },
         buildHTML: buildHTML
     }
