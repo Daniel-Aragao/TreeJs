@@ -137,41 +137,51 @@ TreeJs = (function(){
         }
     }
 
-    function HeapTree() {
+    /*            HEAP TREE
+    i = 1 é a raiz
+    -piso de i/2 é o pai de i
+    -2i é o filho esquerdo de i
+    -2i+1 é o filho direito de i
+    -indice 1 não tem pai...
+    -i só tem filho direito se (2i + 1) <= n
+    -i só tem filho esquerdo se 2i <= n
+    -nível de i é o piso de log(i,2)
+    -nº de nós em um nível é 2**p e são
+        (2**p , (2**p + 1), (2**p + 2), ... , ( 2** (p + 1) - 1))
+    -nº total de níveis é 1 + piso de log de n
+    -o nº total de nós em um nível (tirando o ultimo) é a
+        soma da qtd de nós de todos os outros níveis anteriores + 1        
+    -altura de um nó i é o piso de log(n/i)
+    */
+    function HeapTreeMax() {
         var vetor = []
-        this.arvore = vetor;
 
-        /*
-        i = 1 é a raiz
-        -piso de i/2 é o pai de i
-        -2i é o filho esquerdo de i
-        -2i+1 é o filho direito de i
-        -indice 1 não tem pai...
-        -i só tem filho direito se (2i + 1) <= n
-        -i só tem filho esquerdo se 2i <= n
-        -nível de i é o piso de log(i,2)
-        -nº de nós em um nível é 2**p e são
-            (2**p , (2**p + 1), (2**p + 2), ... , ( 2** (p + 1) - 1))
-        -nº total de níveis é 1 + piso de log de n
-        -o nº total de nós em um nível (tirando o ultimo) é a
-            soma da qtd de nós de todos os outros níveis anteriores + 1        
-        -altura de um nó i é o piso de log(n/i)
-        */
-        this.addNode = function (item) {
-            vetor.push(item);
+        this.getVetor = function () {
+            return vetor;
+        }
+        this.setVetor = function (novoVetor) {
+            vetor = novoVetor;
             this.buildHeap();
         }
 
-        this.removeNode = function (item) {
-            a.indexOf(item);
-            alert("não implementado");
+        this.addNode = function (item) {
+            vetor.push(item);
+            arienep();
+        }
+
+        this.removeFirst = function (item) {
+            var firstItem = vetor[0];
+
+            vetor = vetor.slice(1);            
             this.buildHeap();
+
+            return firstItem;
         }
 
         var peneira = function (i) {
             var j = i;
             var n = vetor.length - 1;
-            while (2 * j <= n) {
+            while ((2 * j) <= n) {
                 var f = 2 * j;
                 if (f < n && vetor[f] < vetor[f + 1]) {
                     f++;
@@ -181,26 +191,98 @@ TreeJs = (function(){
                 } else {
                     var t = vetor[j];
                     vetor[j] = vetor[f];
-                    vetor[f] = vetor[t];
+                    vetor[f] = t;
                     j = f;
                 }
             }
         }
-
         this.buildHeap = function () {
-            var n = vetor.length - 1;
-            for (var i = parseInt(n / 2); i > 1; i--){
+            var n = vetor.length;
+            for (var i = parseInt(n / 2); i > -1; i--){
                 peneira(i);
             }
         }
 
+        var arienep = function () {
+            var i = vetor.length - 1;
+            while (i >= 1 && vetor[parseInt(i/2)] < vetor[i]){
+                var pai = parseInt(i / 2);
+
+                var t = vetor[pai];
+                vetor[pai] = vetor[i];
+                vetor[i] = t;
+
+                i = pai;
+            }
+        }
+    }
+
+    function HeapTreeMin() {
+        var vetor = []
+
+        this.getVetor = function () {
+            return vetor;
+        }
+        this.setVetor = function (novoVetor) {
+            vetor = novoVetor;
+            this.buildHeap();
+        }
+
+        this.addNode = function (item) {
+            vetor.push(item);
+            arienep();
+        }
+
+        this.removeFirst = function (item) {
+            var firstItem = vetor[0];
+
+            vetor = vetor.slice(1);            
+            this.buildHeap();
+
+            return firstItem;
+        }
+
+        var peneira = function (i) {
+            var j = i;
+            var n = vetor.length - 1;
+            while ((2 * j) <= n) {
+                var f = 2 * j;
+                if (f < n && vetor[f] < vetor[f + 1]) {
+                    f++;
+                }
+                if (vetor[j] >= vetor[f]) {
+                    j = n;
+                } else {
+                    var t = vetor[j];
+                    vetor[j] = vetor[f];
+                    vetor[f] = t;
+                    j = f;
+                }
+            }
+        }
+        this.buildHeap = function () {
+            var n = vetor.length;
+            for (var i = parseInt(n / 2); i > -1; i--){
+                peneira(i);
+            }
+        }
+
+        var arienep = function () {
+            var i = vetor.length - 1;
+            while (i >= 1 && vetor[parseInt(i/2)] < vetor[i]){
+                var pai = parseInt(i / 2);
+
+                var t = vetor[pai];
+                vetor[pai] = vetor[i];
+                vetor[i] = t;
+
+                i = pai;
+            }
+        }
     }
 
     function buildHTMLHeap(tree, i) {
-        a(tree.arvore, i);
-    }
-
-    function a(vetor, i) {
+        tree = tree.getVetor();
         var ndiv = document.createElement("div");
         ndiv.className += " tree-node "
 
@@ -233,8 +315,12 @@ TreeJs = (function(){
         return ndiv;
     }
 
+    function a(vetor, i) {
+        
+    }
+
     function buildHTML(node, i) {
-        if (node instanceof HeapTree) {
+        if (node instanceof HeapTreeMax || node instanceof HeapTreeMin) {
             return buildHTMLHeap(node, i);
         }
 
@@ -277,10 +363,14 @@ TreeJs = (function(){
         newTree: function () {
             return new Tree();
         },
-        newHeapTree: function () { 
-            return new HeapTree();
+        newHeapTreeMax: function () { 
+            return new HeapTreeMax();
         },
-        buildHTML: buildHTML
+        newHeapTreeMin: function () { 
+            return new HeapTreeMin();
+        },
+        buildHTML: buildHTML,
+        buildHTMLHeap: buildHTMLHeap
     }
 
 })();
