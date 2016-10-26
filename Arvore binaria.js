@@ -138,20 +138,20 @@ TreeJs = (function(){
     }
 
     /*            HEAP TREE
-    i = 1 é a raiz
-    -piso de i/2 é o pai de i
-    -2i é o filho esquerdo de i
-    -2i+1 é o filho direito de i
-    -indice 1 não tem pai...
-    -i só tem filho direito se (2i + 1) <= n
-    -i só tem filho esquerdo se 2i <= n
-    -nível de i é o piso de log(i,2)
-    -nº de nós em um nível é 2**p e são
+    i = 1 Ã© a raiz
+    -piso de i/2 Ã© o pai de i
+    -2i Ã© o filho esquerdo de i
+    -2i+1 Ã© o filho direito de i
+    -indice 1 nÃ£o tem pai...
+    -i sÃ³ tem filho direito se (2i + 1) <= n
+    -i sÃ³ tem filho esquerdo se 2i <= n
+    -nÃ­vel de i Ã© o piso de log(i,2)
+    -nÂº de nÃ³s em um nÃ­vel Ã© 2**p e sÃ£o
         (2**p , (2**p + 1), (2**p + 2), ... , ( 2** (p + 1) - 1))
-    -nº total de níveis é 1 + piso de log de n
-    -o nº total de nós em um nível (tirando o ultimo) é a
-        soma da qtd de nós de todos os outros níveis anteriores + 1        
-    -altura de um nó i é o piso de log(n/i)
+    -nÂº total de nÃ­veis Ã© 1 + piso de log de n
+    -o nÂº total de nÃ³s em um nÃ­vel (tirando o ultimo) Ã© a
+        soma da qtd de nÃ³s de todos os outros nÃ­veis anteriores + 1        
+    -altura de um nÃ³ i Ã© o piso de log(n/i)
     */
     function HeapTreeMax() {
         var vetor = []
@@ -247,10 +247,10 @@ TreeJs = (function(){
             var n = vetor.length - 1;
             while ((2 * j) <= n) {
                 var f = 2 * j;
-                if (f < n && vetor[f] < vetor[f + 1]) {
+                if (f < n && vetor[f] > vetor[f + 1]) {
                     f++;
                 }
-                if (vetor[j] >= vetor[f]) {
+                if (vetor[j] <= vetor[f]) {
                     j = n;
                 } else {
                     var t = vetor[j];
@@ -269,7 +269,7 @@ TreeJs = (function(){
 
         var arienep = function () {
             var i = vetor.length - 1;
-            while (i >= 1 && vetor[parseInt(i/2)] < vetor[i]){
+            while (i >= 1 && vetor[parseInt(i/2)] > vetor[i]){
                 var pai = parseInt(i / 2);
 
                 var t = vetor[pai];
@@ -281,8 +281,7 @@ TreeJs = (function(){
         }
     }
 
-    function buildHTMLHeap(tree, i) {
-        tree = tree.getVetor();
+    function buildHTMLHeap(vetor, i) {
         var ndiv = document.createElement("div");
         ndiv.className += " tree-node "
 
@@ -294,8 +293,8 @@ TreeJs = (function(){
 
         var cssClass = "node-orientation";
         
-        if (typeof(vetor[2*i]) != "undefined") {
-            var left_html = buildHTML(vetor[2*i]);
+        if (typeof(vetor[2*i + 1]) != "undefined") {
+            var left_html = buildHTMLHeap(vetor, 2*i + 1);
             left_html.children[0].className += cssClass+"-left"
             left_html.children[0].insertAdjacentHTML("afterend",
                 "<span class=\""+cssClass+" "+cssClass+"-left\"> - Left</span>")
@@ -303,8 +302,8 @@ TreeJs = (function(){
             ndiv.appendChild(left_html);  
         }
 
-        if (typeof(vetor[2*i + 1]) != "undefined") {
-            var right_html = buildHTML(2*i + 1);
+        if (typeof(vetor[2*i + 2]) != "undefined") {
+            var right_html = buildHTMLHeap(vetor, 2*i + 2);
             right_html.children[0].className += cssClass+"-right"
 
             right_html.children[0].insertAdjacentHTML("afterend",
@@ -315,13 +314,9 @@ TreeJs = (function(){
         return ndiv;
     }
 
-    function a(vetor, i) {
-        
-    }
-
     function buildHTML(node, i) {
         if (node instanceof HeapTreeMax || node instanceof HeapTreeMin) {
-            return buildHTMLHeap(node, i);
+            return buildHTMLHeap(node.getVetor(), i);
         }
 
         var ndiv = document.createElement("div");
