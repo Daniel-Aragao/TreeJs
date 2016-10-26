@@ -153,20 +153,35 @@ TreeJs = (function(){
         soma da qtd de nós de todos os outros níveis anteriores + 1        
     -altura de um nó i é o piso de log(n/i)
     */
+    function HeapNode(key, value) {
+        this.key = key;
+        this.value = value;
+    }
+
     function HeapTreeMax() {
         var vetor = []
 
         this.getVetor = function () {
             return vetor;
-        }
+        }/*
         this.setVetor = function (novoVetor) {
             vetor = novoVetor;
             this.buildHeap();
-        }
+        }*/
 
         this.addNode = function (item) {
-            vetor.push(item);
-            arienep();
+            if (!(item) instanceof HeapNode) {
+                item = new HeapNode(item, item);
+            }
+            var old = findHeapNode(vetor, item.key);
+
+            if (old == null) {
+                vetor.push(item);    
+                arienep();
+            } else {
+                old.value += item.value
+                this.buildHeap();
+            }
         }
 
         this.removeFirst = function (item) {
@@ -181,12 +196,12 @@ TreeJs = (function(){
         var peneira = function (i) {
             var j = i;
             var n = vetor.length - 1;
-            while ((2 * j) <= n) {
-                var f = 2 * j;
-                if (f < n && vetor[f] < vetor[f + 1]) {
+            while ((2 * j + 1) <= n) {
+                var f = (2 * j) + 1;
+                if (f < n && vetor[f].value < vetor[f + 1].value) {
                     f++;
                 }
-                if (vetor[j] >= vetor[f]) {
+                if (vetor[j].value >= vetor[f].value) {
                     j = n;
                 } else {
                     var t = vetor[j];
@@ -217,20 +232,41 @@ TreeJs = (function(){
         }
     }
 
+    function findHeapNode(V, key) {
+        for (var i = 0; i < V.length; i++){
+            if (V[i].key == key) {
+                return V[i];
+            }
+        }
+        return null;
+    }
+
     function HeapTreeMin() {
         var vetor = []
 
         this.getVetor = function () {
             return vetor;
         }
+        /*
         this.setVetor = function (novoVetor) {
             vetor = novoVetor;
             this.buildHeap();
-        }
+        }*/
 
         this.addNode = function (item) {
-            vetor.push(item);
-            arienep();
+            if (!(item) instanceof HeapNode) {
+                item = new HeapNode(item, item);
+            }
+            var old = findHeapNode(vetor, item.key);
+
+            if (old == null) {
+                vetor.push(item);                
+                arienep();
+            } else {
+                old.value += item.value
+                this.buildHeap();
+            }
+
         }
 
         this.removeFirst = function (item) {
@@ -245,12 +281,12 @@ TreeJs = (function(){
         var peneira = function (i) {
             var j = i;
             var n = vetor.length - 1;
-            while ((2 * j) <= n) {
-                var f = 2 * j;
-                if (f < n && vetor[f] > vetor[f + 1]) {
+            while ((2 * j + 1) <= n) {
+                var f = 2 * j + 1;
+                if (f < n && vetor[f].value > vetor[f + 1].value) {
                     f++;
                 }
-                if (vetor[j] <= vetor[f]) {
+                if (vetor[j].value <= vetor[f].value) {
                     j = n;
                 } else {
                     var t = vetor[j];
@@ -269,7 +305,7 @@ TreeJs = (function(){
 
         var arienep = function () {
             var i = vetor.length - 1;
-            while (i >= 1 && vetor[parseInt(i/2)] > vetor[i]){
+            while (i >= 1 && vetor[parseInt(i/2)].value > vetor[i].value){
                 var pai = parseInt(i / 2);
 
                 var t = vetor[pai];
@@ -288,7 +324,7 @@ TreeJs = (function(){
         var nspan = document.createElement("span");
         nspan.className += " tree-value "
 
-        nspan.innerText = vetor[i];
+        nspan.innerText = vetor[i].key + ": "+vetor[i].value;
         ndiv.appendChild(nspan);
 
         var cssClass = "node-orientation";
@@ -363,6 +399,9 @@ TreeJs = (function(){
         },
         newHeapTreeMin: function () { 
             return new HeapTreeMin();
+        },
+        newHeapNode: function (key, value) {
+            return new HeapNode(key, value);
         },
         buildHTML: buildHTML,
         buildHTMLHeap: buildHTMLHeap

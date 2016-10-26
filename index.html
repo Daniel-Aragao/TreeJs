@@ -4,7 +4,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="../Arvores/Arvore binaria.js"></script>
-        <script src="JavaScript/Site.js" ></script>
         <link rel="stylesheet" href="../Arvores/Arvore.css">
     </head>
     <body>
@@ -41,10 +40,21 @@
             content.appendChild(root_html);
             ////////////////////////////////////////////
             
-            a = [1,2,3,4,5,6,7,8,9,10]
             hTree = TreeJs.newHeapTreeMax();
-            hTree.setVetor(a)
-            hTree.addNode(11)
+            hTree.addNode(TreeJs.newHeapNode(1,1))
+            hTree.addNode(TreeJs.newHeapNode(1,1))
+            hTree.addNode(TreeJs.newHeapNode(2,1))
+            hTree.addNode(TreeJs.newHeapNode(2,14))
+            hTree.addNode(TreeJs.newHeapNode(3,1))
+            hTree.addNode(TreeJs.newHeapNode(4,7))
+            hTree.addNode(TreeJs.newHeapNode(5,1))
+            hTree.addNode(TreeJs.newHeapNode(6,1))
+            hTree.addNode(TreeJs.newHeapNode(7,3))
+            hTree.addNode(TreeJs.newHeapNode(8,2))
+            hTree.addNode(TreeJs.newHeapNode(9,1))
+            hTree.addNode(TreeJs.newHeapNode(10,9))
+            hTree.addNode(TreeJs.newHeapNode(10,1))
+            hTree.addNode(TreeJs.newHeapNode(4,5))
             
             root_html = TreeJs.buildHTML(hTree, 0)
 
@@ -56,10 +66,20 @@
             
             ////////////////////////////////////////////
 
-            a = [10,9,8,7,6,5,4,3,2,1]
             hMinTree = TreeJs.newHeapTreeMin();
-            hMinTree.setVetor(a)
-            hMinTree.addNode(0)
+            
+            hMinTree.addNode(TreeJs.newHeapNode(10,1))
+            hMinTree.addNode(TreeJs.newHeapNode(10,5))
+            hMinTree.addNode(TreeJs.newHeapNode(9,15))
+            hMinTree.addNode(TreeJs.newHeapNode(7,8))
+            hMinTree.addNode(TreeJs.newHeapNode(8,95))
+            hMinTree.addNode(TreeJs.newHeapNode(6,28))
+            hMinTree.addNode(TreeJs.newHeapNode(5,43))
+            hMinTree.addNode(TreeJs.newHeapNode(2,3))
+            hMinTree.addNode(TreeJs.newHeapNode(4,9))
+            hMinTree.addNode(TreeJs.newHeapNode(3,8))
+            hMinTree.addNode(TreeJs.newHeapNode(1,1))
+            hMinTree.addNode(TreeJs.newHeapNode(1,2))
             
             root_html = TreeJs.buildHTML(hMinTree, 0)
 
