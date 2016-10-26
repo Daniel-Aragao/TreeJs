@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="../Arvores/Arvore binaria.js"></script>
+        <script src="JavaScript/Site.js" ></script>
+        <link rel="stylesheet" href="../Arvores/Arvore.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="panel-heading">Árvores</h1>
+            <div id="content" class=" panel-body">
+
+            </div>
+        </div>
+        <script>
+            
+            content = document.getElementById("content")
+            tree = TreeJs.newTree()
+            
+            tree.addNode(1)
+            tree.addNode(2,1,"left")
+            tree.addNode(3,2,"right")
+            tree.addNode(4,1,"right")
+            tree.addNode(5,3,"right")
+            tree.addNode(6,2,"left")
+            tree.addNode(7,3,"left")
+            tree.addNode(8,5,"left")
+            tree.addNode(9,4,"right")
+            tree.addNode(10,9,"left")
+            tree.addNode(11,9,"right")
+            
+            root = tree.getRoot();
+            root_html = TreeJs.buildHTML(root);
+
+            var div = document.createElement("h2");
+            div.innerHTML = "Árvore binária"
+            content.appendChild(div);
+
+            content.appendChild(root_html);
+            ////////////////////////////////////////////
+            
+            a = [1,2,3,4,5,6,7,8,9,10]
+            hTree = TreeJs.newHeapTreeMax();
+            hTree.setVetor(a)
+            hTree.addNode(11)
+            
+            root_html = TreeJs.buildHTML(hTree, 0)
+
+            div = document.createElement("h2");
+            div.innerHTML = "Árvore Heap Máxima"
+            content.appendChild(div);
+
+            content.appendChild(root_html)
+            
+            ////////////////////////////////////////////
+
+            a = [10,9,8,7,6,5,4,3,2,1]
+            hMinTree = TreeJs.newHeapTreeMin();
+            hMinTree.setVetor(a)
+            hMinTree.addNode(0)
+            
+            root_html = TreeJs.buildHTML(hMinTree, 0)
+
+            div = document.createElement("h2");
+            div.innerHTML = "Árvore Heap Mínima"
+            content.appendChild(div);
+
+            content.appendChild(root_html)
+            
+
+            ////////////////////////////////////////////
+
+            tree = TreeJs.newTree()
+            
+            tree.addNode('um')
+            tree.addNode('dois','um',"left")
+            tree.addNode('tres','dois',"right")
+            tree.addNode('quatro','um',"right")
+            tree.addNode('cinco','tres',"right")
+            tree.addNode('seis','dois',"left")
+            tree.addNode('sete','tres',"left")
+            tree.addNode('oito','cinco',"left")
+            tree.addNode('nove','quatro',"right")
+            tree.addNode('dez','nove',"left")
+            tree.addNode('onze','nove',"right")
+            
+            root = tree.getRoot()
+            root_html = TreeJs.buildHTML(root)
+
+            div = document.createElement("h2");
+            div.innerHTML = "Árvore binária"
+            content.appendChild(div);
+
+            content.appendChild(root_html)
+
+            ////////////////////////////////////////////
+
+        </script>
+    </body>
+</html>
