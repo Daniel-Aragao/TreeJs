@@ -7,7 +7,7 @@ TreeJs = (function(){
     }
     
     function Tree() {
-        parent = null;
+        var parent = null;
         this.getRoot = function () { return parent;}
 
         this.addNode = function (node, pai, side) {
@@ -93,6 +93,19 @@ TreeJs = (function(){
 
         }
 
+        this.getAltura = function(value){
+            var sum = -1;
+            var pai = null;
+            do {
+                pai = this.getNodeParent(value);
+                if(pai != null) value = pai.value;
+                sum++;
+            } while (pai != null);
+
+
+            return sum;
+        }
+
         this.getNode = function (value) {
             return searchNode(parent, value)
         }
@@ -169,10 +182,12 @@ TreeJs = (function(){
             this.buildHeap();
         }*/
 
-        this.addNode = function (item) {
-            if (!(item) instanceof HeapNode) {
-                item = new HeapNode(item, item);
+        this.addNode = function (key,value) {
+            item = key;
+            if (!(key instanceof HeapNode)) {
+                item = new HeapNode(key, value)
             }
+
             var old = findHeapNode(vetor, item.key);
 
             if (old == null) {
@@ -253,10 +268,12 @@ TreeJs = (function(){
             this.buildHeap();
         }*/
 
-        this.addNode = function (item) {
-            if (!(item) instanceof HeapNode) {
-                item = new HeapNode(item, item);
+        this.addNode = function (key,value) {
+            item = key;
+            if (!(key instanceof HeapNode)) {
+                item = new HeapNode(key, value)
             }
+
             var old = findHeapNode(vetor, item.key);
 
             if (old == null) {
@@ -388,8 +405,8 @@ TreeJs = (function(){
     }
     
     return {
-        newNode: function () {
-            return new Node();
+        newNode: function (value) {
+            return new Node(value);
         },
         newTree: function () {
             return new Tree();
